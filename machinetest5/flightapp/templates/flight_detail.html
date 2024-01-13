@@ -1,0 +1,120 @@
+<!-- flywithme/templates/flywithme/flight_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            width: 200px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        h2, p {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Flight List</h2>
+
+<!-- Display All Flights -->
+{% if not flight_id_to_display %}
+    <ul>
+        {% for flight in flights %}
+            <li><a href="{% url 'flight_detail' flight.FlightId %}">{{ flight }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!-- Flight ID Search Form -->
+<form method="GET" action="{% url 'flight_list' %}">
+    <label for="flight_id">Search by Flight ID:</label>
+    <input type="text" name="flight_id" id="flight_id">
+    <button type="submit">Search</button>
+</form>
+
+<!-- Display Search Results -->
+{% if flight_id_to_display %}
+    {% if flight %}
+        <h2>Displaying details for Flight ID: {{ flight_id_to_display }}</h2>
+        <!-- Display details for the specific flight here -->
+        <table>
+            <tr>
+                <th>Flight ID</th>
+                <th>Departure Airport</th>
+                <th>Departure Date</th>
+                <!-- Add other headers as needed -->
+            </tr>
+            <tr>
+                <td>{{ flight.FlightId }}</td>
+                <td>{{ flight.DepAirport }}</td>
+                <td>{{ flight.DepDate }}</td>
+                <!-- Add other details as needed -->
+            </tr>
+        </table>
+    {% else %}
+        <p>No details found for Flight ID: {{ flight_id_to_display }}</p>
+    {% endif %}
+{% endif %}
+
+</body>
+</html>
